@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Intro‑Sound PWA</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #5f0ae6, #8a2be2);
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    h1 { font-size: 2rem; margin-bottom: .5rem; }
+    p { font-size: 1rem; opacity: 0.85; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Welcome!</h1>
+    <p>Sound plays on every open.</p>
+    <audio id="intro" src="intro.mp3" autoplay loop playsinline preload="auto"></audio>
+  </main>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+    const a = document.getElementById('intro');
+    const play = () => a.play().catch(() => {
+      window.addEventListener('pointerdown', () => a.play(), { once: true });
+    });
+    a.readyState >= 2 ? play() : a.addEventListener('canplaythrough', play, { once: true });
+  </script>
+</body>
+</html>
